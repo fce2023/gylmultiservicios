@@ -1,0 +1,15 @@
+.contact-info {
+  display: flex;
+  align-items: center;
+  gap: .5rem;       /* separación entre elementos */
+  font-size: .85rem;
+  color: #e5e7eb;
+}
+
+.contact-info a {
+  color: #e5e7eb;
+  text-decoration: none;
+}
+.contact-info a:hover {
+  color: #f59e0b;
+}

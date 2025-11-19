@@ -6,8 +6,7 @@
 
   <!-- Title optimizado -->
   <title>G &amp; L Multiservicios y Construcción E.I.R.L. | Estructuras metálicas y obras civiles en Huallanca</title>
-  <title>L &amp; L Multiservicios y Construcción E.I.R.L. | Estructuras metálicas y obras civiles en Huallanca</title>
-
+  
   <!-- Meta description -->
   <meta name="description" content="G & L Multiservicios y Construcción E.I.R.L. — fabricación e instalación de estructuras metálicas, obras civiles, edificación industrial, transporte y más. Cotiza por WhatsApp: (+51) 994 942 321.">
 

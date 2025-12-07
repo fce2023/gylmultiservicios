@@ -33,6 +33,12 @@
   <!-- CSS -->
   <link rel="stylesheet" href="css/styles.css">
 
+  <!-- Swiper (defer) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+
+  <script src="js/main.js" defer></script>
+
   <!-- Open Graph -->
   <meta property="og:title" content="G &amp; L Multiservicios y Construcción E.I.R.L.">
   <meta property="og:description" content="Estructuras metálicas, obras civiles y más. Cotiza en WhatsApp con nosotros.">
@@ -85,15 +91,6 @@
   }
   </script>
 
-  <style>
-    /* helper sr-only */
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-    /* pequeño estilo para whatsapp-options show (controla en tu css principal) */
-    .whatsapp-options { display:none; position: absolute; right: 10px; bottom: 60px; background:#fff; box-shadow:0 6px 18px rgba(0,0,0,.12); border-radius:8px; padding:8px; }
-    .whatsapp-options.show { display:block; }
-    .whatsapp-float{ cursor:pointer; display:flex; align-items:center; padding:8px; background:#25D366; color:#fff; border-radius:30px;}
-    .whatsapp-container{ position: fixed; right: 16px; bottom: 16px; z-index: 9999;}
-  </style>
 </head>
 
 <body>
@@ -153,17 +150,17 @@
           <input id="nombre" type="text" name="nombre" placeholder="Nombre / Empresa" required>
 
           <label for="tipo_doc"><strong>Tipo Documento:</strong></label>
-          <select id="tipo_doc" name="tipo_doc" required onchange="cambiarValidacion()">
+          <select id="tipo_doc" name="tipo_doc" required>
             <option value="">Seleccione...</option>
             <option value="dni">DNI</option>
             <option value="ruc">RUC</option>
           </select>
 
           <label for="documento" class="sr-only">Documento</label>
-          <input type="text" id="documento" name="documento" placeholder="Ingrese documento" required disabled oninput="validarDocumento(this)">
+          <input type="text" id="documento" name="documento" placeholder="Ingrese documento" required disabled>
 
           <label for="telefono" class="sr-only">Teléfono</label>
-          <input id="telefono" type="tel" name="telefono" placeholder="Teléfono" required pattern="[0-9]{9}" minlength="9" maxlength="9" oninput="this.value=this.value.replace(/[^0-9]/g,'')" title="Ingrese un número válido de 9 dígitos">
+          <input id="telefono" type="tel" name="telefono" placeholder="Teléfono" required pattern="[0-9]{9}" minlength="9" maxlength="9" title="Ingrese un número válido de 9 dígitos">
 
           <label for="email" class="sr-only">Correo</label>
           <input id="email" type="email" name="email" placeholder="Ingrese Correo" autocomplete="email" required>
@@ -365,83 +362,5 @@
   <footer id="firma">
     <p>G &amp; L Multiservicios y Construcción E.I.R.L. 2025 &copy; Todos los derechos reservados.</p>
   </footer>
-
-  <!-- Swiper (defer) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
-
-  <!-- SCRIPTS: inicialización, validaciones y WhatsApp toggle -->
-  <script>
-    // Espera DOM
-    document.addEventListener('DOMContentLoaded', function() {
-      // Inicia Swiper si está disponible
-      if (typeof Swiper !== 'undefined') {
-        new Swiper(".mySwiper", {
-          slidesPerView: 3,
-          spaceBetween: 20,
-          loop: true,
-          autoplay: { delay: 2500, disableOnInteraction: false },
-          pagination: { el: ".swiper-pagination", clickable: true },
-          navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
-          breakpoints: { 0:{slidesPerView:1},768:{slidesPerView:2},1024:{slidesPerView:3} }
-        });
-      }
-
-      // WhatsApp toggle (click + teclado + cerrar al clic fuera / ESC)
-      const btn = document.getElementById('whatsapp-btn');
-      const options = document.getElementById('whatsapp-options');
-
-      if (btn && options) {
-        const toggle = (show) => {
-          options.classList.toggle('show', show);
-          options.setAttribute('aria-hidden', !show);
-        };
-
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          toggle(!options.classList.contains('show'));
-        });
-
-        btn.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            toggle(!options.classList.contains('show'));
-          }
-        });
-
-        document.addEventListener('click', function(e) {
-          if (!options.contains(e.target) && !btn.contains(e.target)) toggle(false);
-        });
-
-        document.addEventListener('keydown', function(e) {
-          if (e.key === 'Escape') toggle(false);
-        });
-      }
-    });
-
-    // cambiarValidacion: habilita y ajusta placeholder/maxLength
-    function cambiarValidacion() {
-      const tipo = document.getElementById('tipo_doc').value;
-      const docInput = document.getElementById('documento');
-
-      docInput.value = '';
-      docInput.disabled = !tipo;
-      docInput.maxLength = tipo === 'dni' ? 8 : tipo === 'ruc' ? 11 : '';
-      docInput.placeholder = tipo === 'dni' ? 'Ingrese su DNI (8 dígitos)' :
-                            tipo === 'ruc' ? 'Ingrese su RUC (11 dígitos)' : 'Ingrese documento';
-    }
-
-    // validarDocumento: solo números y cambio de color
-    function validarDocumento(input) {
-      const tipo = document.getElementById('tipo_doc').value;
-      let valor = input.value || '';
-      valor = valor.replace(/\D/g, '');
-      input.value = valor;
-
-      const ok = (tipo === 'dni' && valor.length === 8) || (tipo === 'ruc' && valor.length === 11);
-      input.style.borderColor = ok ? 'green' : (valor.length === 0 ? '' : 'red');
-    }
-  </script>
-
 </body>
 </html>
